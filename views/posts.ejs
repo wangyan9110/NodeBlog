@@ -1,0 +1,45 @@
+<%include common/postcss.ejs%>
+<div class="col-xs-12 col-sm-9">
+    <div class="row">
+        <%if(!posts){%>
+            <p style="text-align: center">没有文章。</p>
+        <%}else {%>
+        <%for(var index=0;index<posts.length;index++){%>
+        <div class="col-6 col-sm-12 .col-lg-12">
+            <div class="postTitle">
+                <a href="<%=ROOT%>/posts/<%=posts[index].url%>"><%=posts[index].title%></a>
+            </div>
+            <div>
+             <div class="abstarct">
+                 摘要:<%=posts[index].abstract%>
+                 <a href="<%=ROOT%>/posts/<%=posts[index].url%>">阅读全文</a>
+             </div>
+            </div>
+            <div class="clear"></div>
+            <div class="postDesc">
+                posted @ <%=posts[index].postedTime.format('yyyy-MM-dd hh:mm:ss') %> 阅读(<%=posts[index].pageView %>)
+                <%if(user){%>
+                   编辑
+                <%}%>
+            </div>
+            <div class="clear"></div>
+        </div><!--/span-->
+        <%}%>
+      <%}%>
+
+    </div><!--/row-->
+  <ul id="pager"></ul>
+</div>
+<script src="<%=ROOT %>/js/bootstrap/bootstrap-paginator.min.js" type="text/javascript"></script>
+<script type="text/javascript">
+    var options={
+        currentPage:'<%=currPage %>',
+        totalPages:'<%=total %>',
+       // size:'large',
+        bootstrapMajorVersion:3,
+        pageUrl:function(type,page,current){
+            return "<%=ROOT%>/posts/list/"+page;
+        }
+    };
+    $("#pager").bootstrapPaginator(options);
+</script>

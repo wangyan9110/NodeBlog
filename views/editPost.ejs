@@ -1,0 +1,97 @@
+<% include common/header.ejs %>
+<link rel="stylesheet" href="<%=ROOT %>/js/kindeditor/themes/default/default.css">
+
+<style type="text/css">
+    .submit{
+        padding: 10,10,10,50;
+        width:220px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+</style>
+
+<form id="postForm" method="post">
+
+<p><input name="title" id="title" type="text" class="form-control" placeholder="请输入标题" required/></p>
+
+<textarea id="content" name="content" style="width:100%;height:500px;visibility:hidden;" required>写点什么?</textarea>
+    <div class="panel panel-default panel-info" style="margin-top: 20px;">
+        <div class="panel-heading ">文章分类</div>
+        <div class="panel-body" id="categorys">
+            <% if(categorys==null||categorys.length==0){%>4
+              没有任何分类
+            <%}else{%>
+            <%for(var index=0;index<categorys.length;index++){%>
+            <label class="checkbox-inline">
+               <input type="checkbox" style="margin-left: 10px;" name="categorys" value="<%=categorys[index].id%>"/><%=categorys[index].title%>
+            </label>
+            <%}%>
+            <%}%>
+        </div>
+    </div>
+    <input id="action" type="hidden" name="action" value=""/>
+    <p class="submit">
+        <button id="btnPublish" class="btn btn-success btn-lg type="submit">发布</button>
+        <button id="btnSave" class="btn btn-info btn-lg" type="submit">保存</button>
+        <button id="btnCancel" class="btn btn-danger btn-lg" type="submit">取消</button>
+    </p>
+</form>
+<script src="<%=ROOT %>/js/kindeditor/kindeditor-min.js"></script>
+<script src="<%=ROOT %>/js/kindeditor/zh_CN.js"></script>
+
+<script>
+    $("#btnPublish").click(function(){
+        $("#action").val("published");
+        $("#postForm").submit();
+    });
+
+    $("#btnSave").click(function(){
+        $("#action").val("unPublished");
+        $("#postForm").submit();
+    });
+
+    $("#postForm").submit(function(){
+        var categorys=$("#categorys").find(":checked");
+        if(categorys.length<1){
+            showError("请至少选择一个分类。");
+            return false;
+        }
+        return true;
+    });
+
+    var editor;
+    KindEditor.ready(function(K) {
+        editor = K.create('textarea[name="content"]', {
+            allowFileManager : true
+        });
+        K('input[name=getHtml]').click(function(e) {
+            alert(editor.html());
+        });
+        K('input[name=isEmpty]').click(function(e) {
+            alert(editor.isEmpty());
+        });
+        K('input[name=getText]').click(function(e) {
+            alert(editor.text());
+        });
+        K('input[name=selectedHtml]').click(function(e) {
+            alert(editor.selectedHtml());
+        });
+        K('input[name=setHtml]').click(function(e) {
+            editor.html('<h3>Hello KindEditor</h3>');
+        });
+        K('input[name=setText]').click(function(e) {
+            editor.text('<h3>Hello KindEditor</h3>');
+        });
+        K('input[name=insertHtml]').click(function(e) {
+            editor.insertHtml('<strong>插入HTML</strong>');
+        });
+        K('input[name=appendHtml]').click(function(e) {
+            editor.appendHtml('<strong>添加HTML</strong>');
+        });
+        K('input[name=clear]').click(function(e) {
+            editor.html('');
+        });
+    });
+</script>
+
+<% include common/footer.ejs %>

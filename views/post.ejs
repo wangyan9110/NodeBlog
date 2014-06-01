@@ -1,0 +1,28 @@
+<%include common/header.ejs%>
+<%include common/postcss.ejs%>
+
+<div class="col-xs-12 col-sm-9">
+<div class="post">
+<h1 class="postTitle">
+    <a href="<%=ROOT%>/post/<%=post.url%>"><%=post.title%></a>
+</h1>
+    <div class="clear"></div>
+    <div>
+        <div style="margin-bottom: 20px;">
+        <%-post.content%>
+        </div>
+    </div>
+    <div class="clear"></div>
+    <div class="postDesc">
+        posted @ <%=post.postedTime.format('yyyy-MM-dd hh:mm:ss') %> 阅读(<%=post.pageView %>)
+        <%if(user){%>
+        编辑
+        <%}%>
+    </div>
+    <div class="clear"></div>
+</div>
+
+</div>
+
+<%include categorys.ejs%>
+<%include common/footer.ejs%>
